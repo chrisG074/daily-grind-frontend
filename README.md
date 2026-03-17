@@ -1,6 +1,14 @@
-# daily-grind-frontend
+# Daily Grind — Frontend
 
-A lightweight frontend for the **Daily Grind** application. It is served by a small Node.js/Express static file server and communicates with the [daily-grind-backend](https://github.com/chrisG074/daily-grind-backend) API.
+![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5.4.10-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.15-06B6D4?logo=tailwindcss&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Alpine-2496ED?logo=docker&logoColor=white)
+
+A modern, fully-typed e-commerce storefront for **Daily Grind** — an online shop specialising in flags and flag-related products. Built with React 18, TypeScript, Vite, Tailwind CSS, and Shadcn/ui, the app delivers a fast, accessible, and internationalised shopping experience out of the box.
+
+Users can browse products across three categories (Country Flags, Corporate Flags, Accessories), filter and sort listings, configure custom flags, manage a shopping cart, and complete checkout — all with support for four languages (Dutch, English, German, French) and three currencies (EUR, GBP, USD).
 
 ---
 
@@ -10,22 +18,29 @@ A lightweight frontend for the **Daily Grind** application. It is served by a sm
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Install Dependencies](#install-dependencies)
-  - [Environment Variables](#environment-variables)
+  - [Installation](#installation)
   - [Run Locally](#run-locally)
+- [Available Scripts](#available-scripts)
+- [Environment Variables](#environment-variables)
 - [Docker](#docker)
 - [API Integration](#api-integration)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Tech Stack
 
-| Layer    | Technology           |
-|----------|----------------------|
-| Runtime  | Node.js 18           |
-| Server   | Express 4            |
-| Frontend | Vanilla HTML/CSS/JS  |
-| Container | Docker (Alpine)     |
+| Layer               | Technology                              |
+|---------------------|-----------------------------------------|
+| Frontend Framework  | React 18.3.1                            |
+| Language            | TypeScript 5.6.3                        |
+| Build Tool          | Vite 5.4.10                             |
+| UI / Styling        | Tailwind CSS 3.4.15 + Radix UI          |
+| Component Library   | Shadcn/ui (Radix primitives + Tailwind) |
+| Form Library        | React Hook Form 7.71.2                  |
+| Icons               | Lucide React 0.577.0                    |
+| Containerisation    | Docker (Node 18 Alpine)                 |
 
 ---
 
@@ -34,10 +49,39 @@ A lightweight frontend for the **Daily Grind** application. It is served by a sm
 ```
 daily-grind-frontend/
 ├── public/
-│   └── index.html      # Main page served to the browser
-├── server.js           # Express server – serves static files & injects runtime config
-├── Dockerfile          # Container image definition
-└── package.json
+│   └── logo.jpg
+├── src/
+│   ├── App.tsx                    # Root application component & routing
+│   ├── main.tsx                   # React entry point
+│   ├── index.css                  # Global styles
+│   ├── vite-env.d.ts              # Vite environment type declarations
+│   ├── styles/
+│   │   └── globals.css
+│   └── components/
+│       ├── Header.tsx             # Site-wide navigation & language/currency switcher
+│       ├── Footer.tsx
+│       ├── HomePage.tsx           # Landing page
+│       ├── ProductGrid.tsx        # Product listing with sort controls
+│       ├── FilterSidebar.tsx      # Category & attribute filters
+│       ├── FlagConfigurator.tsx   # Custom flag builder
+│       ├── ShoppingCart.tsx       # Cart drawer / page
+│       ├── CheckoutProgress.tsx   # Multi-step checkout indicator
+│       ├── Payment.tsx            # Payment step
+│       ├── FAQ.tsx
+│       ├── Shipping.tsx
+│       ├── Returns.tsx
+│       ├── PrivacyPolicy.tsx
+│       ├── TermsConditions.tsx
+│       ├── CookiePolicy.tsx
+│       ├── Newsletter.tsx
+│       └── ui/                    # 46 reusable Shadcn/ui primitives
+├── index.html
+├── package.json
+├── vite.config.ts
+├── tailwind.config.js
+├── tsconfig.json
+├── Dockerfile
+└── README.md
 ```
 
 ---
@@ -46,40 +90,59 @@ daily-grind-frontend/
 
 ### Prerequisites
 
-- [Node.js 18+](https://nodejs.org/)
-- [npm](https://www.npmjs.com/)
+- [Node.js 18+](https://nodejs.org/) — the runtime required to install dependencies and run the dev server
+- [npm](https://www.npmjs.com/) — comes bundled with Node.js
 
-### Install Dependencies
+### Installation
+
+Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/chrisG074/daily-grind-frontend.git
+cd daily-grind-frontend
 npm install
 ```
-
-### Environment Variables
-
-| Variable              | Default                  | Description                          |
-|-----------------------|--------------------------|--------------------------------------|
-| `PORT`                | `3000`                   | Port the Express server listens on   |
-| `REACT_APP_API_URL`   | `http://localhost:5000`  | Base URL of the backend API          |
-
-> **Note:** The variable is named `REACT_APP_API_URL` for historical reasons – this project uses plain HTML/JS, not React.
-
-The server exposes a `/config.js` endpoint that injects `REACT_APP_API_URL` into the browser at runtime via `window.APP_CONFIG.API_URL`.
 
 ### Run Locally
 
 ```bash
-# Optional: set the backend URL
+# Optional: point the app at a running backend instance
 export REACT_APP_API_URL=http://localhost:5000
 
-npm start
+npm run dev
 ```
 
-The application is now available at <http://localhost:3000>.
+The dev server starts at <http://localhost:3000> with hot-module replacement enabled.
+
+---
+
+## Available Scripts
+
+| Script            | Description                                          |
+|-------------------|------------------------------------------------------|
+| `npm run dev`     | Start the Vite development server on port **3000**   |
+| `npm run build`   | Type-check with `tsc` then produce a production build into `dist/` |
+| `npm run preview` | Serve the production build locally for inspection    |
+| `npm start`       | Alias for `npm run dev`                              |
+
+---
+
+## Environment Variables
+
+Configure the app by setting the following variables in your shell or in a `.env` file at the project root:
+
+| Variable             | Default                 | Description                                           |
+|----------------------|-------------------------|-------------------------------------------------------|
+| `PORT`               | `3000`                  | Port the development / preview server listens on      |
+| `REACT_APP_API_URL`  | `http://localhost:5000` | Base URL of the [daily-grind-backend](https://github.com/chrisG074/daily-grind-backend) REST API |
+
+> **Tip:** Create a `.env.local` file for local overrides — Vite automatically loads it and it is excluded from version control by default.
 
 ---
 
 ## Docker
+
+A `Dockerfile` is included for containerised deployments. It uses a **Node 18 Alpine** base image to keep the image size small.
 
 ### Build the image
 
@@ -95,9 +158,38 @@ docker run -p 3000:3000 \
   daily-grind-frontend
 ```
 
+The application will be accessible at <http://localhost:3000>.
+
 ---
 
 ## API Integration
 
-The frontend calls the backend's `/api/ping` endpoint to verify connectivity. The backend URL is read at runtime from `window.APP_CONFIG.API_URL`, which is injected by the server via `/config.js`. This means no rebuild is required when changing the backend URL – simply set the `REACT_APP_API_URL` environment variable before starting the server.
+This frontend is paired with the [daily-grind-backend](https://github.com/chrisG074/daily-grind-backend). Set the `REACT_APP_API_URL` environment variable to point the app at the correct backend instance before starting the server. No rebuild is necessary when switching environments — simply update the variable and restart the container or dev server.
+
+---
+
+## Contributing
+
+Contributions are welcome! Here's how to get involved:
+
+1. **Fork** the repository and create a feature branch:
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+2. **Make your changes** — keep commits focused and descriptive.
+3. **Lint / build** before opening a PR:
+   ```bash
+   npm run build
+   ```
+4. **Open a Pull Request** against `main` with a clear description of what you changed and why.
+
+> **Note:** There is currently no automated test suite configured for this project. When adding new components or logic, please include manual testing notes in your PR description.
+
+---
+
+## License
+
+> ⚠️ **No LICENSE file is currently present in this repository.**
+
+This project is intended to be released under the **[MIT License – see LICENSE file]**. If you are a maintainer, please add a `LICENSE` file to the repository root to clarify the terms under which the code may be used, modified, and distributed.
 
