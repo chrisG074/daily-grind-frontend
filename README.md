@@ -191,5 +191,5 @@ Contributions are welcome! Here's how to get involved:
 
 > ⚠️ **No LICENSE file is currently present in this repository.**
 
-This project is intended to be released under the **[MIT License – see LICENSE file]**. If you are a maintainer, please add a `LICENSE` file to the repository root to clarify the terms under which the code may be used, modified, and distributed.
+The maintainers intend to license this project under the **MIT License**. If you are a maintainer, please add a `LICENSE` file to the repository root to clarify the terms under which the code may be used, modified, and distributed.
 
