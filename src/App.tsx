@@ -1,57 +1,238 @@
-import { useMemo, useState } from "react";
+import { useState } from 'react';
+import { Header } from './components/Header';
+import { HomePage } from './components/HomePage';
+import { ProductGrid } from './components/ProductGrid';
+import { FilterSidebar } from './components/FilterSidebar';
+import { FlagConfigurator } from './components/FlagConfigurator';
+import { CheckoutProgress } from './components/CheckoutProgress';
+import { ShoppingCart } from './components/ShoppingCart';
+import { Footer } from './components/Footer';
+import { Breadcrumbs } from './components/Breadcrumbs';
+import { ProductSort } from './components/ProductSort';
+import { TrustBadges } from './components/TrustBadges';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
+import { TermsConditions } from './components/TermsConditions';
+import { CookiePolicy } from './components/CookiePolicy';
+import { FAQ } from './components/FAQ';
+import { Shipping } from './components/Shipping';
+import { Returns } from './components/Returns';
+import { Payment } from './components/Payment';
 
-type PingResponse = {
-  message: string;
-};
+type Language = 'nl' | 'en' | 'de' | 'fr';
+type Currency = 'EUR' | 'GBP' | 'USD';
+type Category = 'country' | 'corporate' | 'accessories';
+type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest' | 'name';
+type Page = 'home' | 'shop' | 'privacy' | 'terms' | 'cookies' | 'faq' | 'shipping' | 'returns' | 'payment';
 
-function App() {
-  const apiBaseUrl = useMemo(() => {
-    return import.meta.env.VITE_API_URL || "http://localhost:5000";
-  }, []);
+export interface FilterState {
+  attachmentMethod: string[];
+  country: string[];
+  material: string[];
+}
 
-  const [result, setResult] = useState<string>("Klik op de knop om /api/ping aan te roepen.");
-  const [loading, setLoading] = useState(false);
+export interface CartItem {
+  id: number;
+  name: string;
+  size: string;
+  material: string;
+  attachment: string;
+  quantity: number;
+  price: number;
+  image: string;
+}
 
-  const testConnection = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/ping`);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      const data: PingResponse = await response.json();
-      setResult(JSON.stringify(data, null, 2));
-    } catch (error) {
-      if (error instanceof Error) {
-        setResult(`Fout: ${error.message}`);
-      } else {
-        setResult("Fout: Onbekende fout");
-      }
-    } finally {
-      setLoading(false);
-    }
+const mockCartItems: CartItem[] = [
+  {
+    id: 1,
+    name: 'Netherlands Flag',
+    size: '150 x 225 cm',
+    material: '110g/m² Gloss Poly',
+    attachment: 'Hooks',
+    quantity: 2,
+    price: 39.99,
+    image: 'netherlands flag',
+  },
+  {
+    id: 2,
+    name: 'German Flag',
+    size: '100 x 150 cm',
+    material: '115g/m² Nautical Poly',
+    attachment: 'Cord',
+    quantity: 1,
+    price: 34.99,
+    image: 'germany flag',
+  },
+];
+
+export default function App() {
+  const [language, setLanguage] = useState<Language>('nl');
+  const [currency, setCurrency] = useState<Currency>('EUR');
+  const [category, setCategory] = useState<Category>('country');
+  const [filters, setFilters] = useState<FilterState>({
+    attachmentMethod: [],
+    country: [],
+    material: []
+  });
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [checkoutStep, setCheckoutStep] = useState(0);
+  const [sortOption, setSortOption] = useState<SortOption>('popular');
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+
+  const handleNavigateToShop = () => {
+    setCurrentPage('shop');
+  };
+
+  const handleCategorySelect = (newCategory: Category) => {
+    setCategory(newCategory);
+    setCurrentPage('shop');
+  };
+
+  const productCounts = {
+    country: 8,
+    corporate: 8,
+    accessories: 8,
+  };
+
+  // Calculate total items in cart
+  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  const updateQuantity = (id: number, delta: number) => {
+    setCartItems(items =>
+      items.map(item =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
+  };
+
+  const removeItem = (id: number) => {
+    setCartItems(items => items.filter(item => item.id !== id));
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 px-4 py-10 text-slate-900">
-      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-8 shadow-xl shadow-slate-300/40">
-        <h1 className="text-3xl font-bold tracking-tight">Daily Grind</h1>
-        <p className="mt-3 text-slate-600">Backend URL: {apiBaseUrl}</p>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Header
+        language={language}
+        onLanguageChange={setLanguage}
+        currency={currency}
+        onCurrencyChange={setCurrency}
+        category={category}
+        onCategoryChange={(cat) => {
+          setCategory(cat);
+          setCurrentPage('shop');
+        }}
+        onCartClick={() => setCartOpen(true)}
+        onLogoClick={() => {
+          setCurrentPage('home');
+        }}
+        cartItemCount={cartItemCount}
+      />
 
-        <button
-          type="button"
-          onClick={testConnection}
-          disabled={loading}
-          className="mt-6 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
-        >
-          {loading ? "Bezig..." : "Test backend verbinding"}
-        </button>
+      {checkoutStep > 0 && (
+        <CheckoutProgress currentStep={checkoutStep} />
+      )}
 
-        <h2 className="mt-8 text-lg font-semibold">Resultaat</h2>
-        <pre className="mt-2 overflow-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-100">{result}</pre>
-      </div>
-    </main>
+      {currentPage === 'privacy' ? (
+        <PrivacyPolicy language={language} />
+      ) : currentPage === 'terms' ? (
+        <TermsConditions language={language} />
+      ) : currentPage === 'cookies' ? (
+        <CookiePolicy language={language} />
+      ) : currentPage === 'faq' ? (
+        <FAQ language={language} />
+      ) : currentPage === 'shipping' ? (
+        <Shipping language={language} />
+      ) : currentPage === 'returns' ? (
+        <Returns language={language} />
+      ) : currentPage === 'payment' ? (
+        <Payment language={language} />
+      ) : currentPage === 'home' ? (
+        <HomePage
+          language={language}
+          onCategorySelect={handleCategorySelect}
+          onNavigateToShop={handleNavigateToShop}
+        />
+      ) : (
+        <div className="max-w-[1400px] mx-auto px-4 py-8 flex-1">
+          {selectedProduct ? (
+            <FlagConfigurator
+              product={selectedProduct}
+              language={language}
+              currency={currency}
+              onBack={() => setSelectedProduct(null)}
+              onAddToCart={() => {
+                setCartOpen(true);
+                setSelectedProduct(null);
+              }}
+            />
+          ) : (
+            <>
+              <Breadcrumbs
+                category={category}
+                language={language}
+                onNavigateHome={() => {
+                  setCurrentPage('home');
+                }}
+              />
+              <TrustBadges language={language} />
+              <div className="flex gap-8">
+                <FilterSidebar
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  language={language}
+                  category={category}
+                />
+                <div className="flex-1">
+                  <ProductSort
+                    language={language}
+                    onSortChange={setSortOption}
+                    productCount={productCounts[category]}
+                  />
+                  <ProductGrid
+                    category={category}
+                    filters={filters}
+                    language={language}
+                    currency={currency}
+                    onProductClick={setSelectedProduct}
+                    sortOption={sortOption}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      <Footer 
+        language={language}
+        onPrivacyClick={() => setCurrentPage('privacy')}
+        onTermsClick={() => setCurrentPage('terms')}
+        onCookiesClick={() => setCurrentPage('cookies')}
+        onFaqClick={() => setCurrentPage('faq')}
+        onShippingClick={() => setCurrentPage('shipping')}
+        onReturnsClick={() => setCurrentPage('returns')}
+        onPaymentClick={() => setCurrentPage('payment')}
+        onLogoClick={() => {
+          setCurrentPage('home');
+        }}
+      />
+
+      <ShoppingCart
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        language={language}
+        currency={currency}
+        onCheckout={() => {
+          setCartOpen(false);
+          setCheckoutStep(1);
+        }}
+        cartItems={cartItems}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
+      />
+    </div>
   );
 }
-
-export default App;

@@ -4,6 +4,34 @@
 
 :root {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #009cde;
+  --primary-foreground: #ffffff;
+  --secondary: #e30613;
+  --secondary-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
+  --accent: #fcbf00;
+  --accent-foreground: #1a1a1a;
+  --destructive: #e30613;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.15);
+  --input: transparent;
+  --ring: #009cde;
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #009cde;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: rgba(0, 0, 0, 0.15);
+  --sidebar-ring: #009cde;
 }
 
 * {
@@ -12,4 +40,6 @@
 
 body {
   margin: 0;
+  background: var(--background);
+  color: var(--foreground);
 }
