@@ -84,7 +84,7 @@ export function ProductSort({ language, onSortChange, productCount }: ProductSor
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 px-4 py-2 border-2 border-black rounded-lg hover:bg-white transition-colors bg-white"
         >
-          <span className="text-sm text-black">[{t.sortBy}:]</span>
+          <span className="text-sm text-black">{t.sortBy}:</span>
           <span className="text-sm font-medium text-black">[{selectedLabel}]</span>
           <ChevronDown className="w-4 h-4 text-black" />
         </button>
