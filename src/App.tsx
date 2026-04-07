@@ -126,7 +126,7 @@ export default function App() {
   const { symbols: currencySymbols, rates: currencyRates } = buildCurrencyMaps(availableCurrencies);
 
   return (
-    <TranslationsProvider>
+    <TranslationsProvider language={language}>
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header
         language={language}

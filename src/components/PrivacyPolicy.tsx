@@ -1,3 +1,5 @@
+import { useTranslationForLanguage } from '../context/TranslationsContext';
+
 type Language = string;
 
 interface PrivacyPolicyProps {
@@ -5,7 +7,7 @@ interface PrivacyPolicyProps {
 }
 
 export function PrivacyPolicy({ language }: PrivacyPolicyProps) {
-  const t = useTranslations('privacyPolicy')[language] as any;
+  const t = useTranslationForLanguage('privacyPolicy', language) as any;
 
   return (
     <div className="max-w-[1000px] mx-auto px-4 py-12">

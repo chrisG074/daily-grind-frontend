@@ -1,6 +1,6 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ArrowRight, Award, Truck, Shield, Globe, Building2, Package } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Category = 'country' | 'corporate' | 'accessories';
@@ -19,7 +19,7 @@ const featuredProducts = [
 ];
 
 export function HomePage({ language, onCategorySelect, onNavigateToShop }: HomePageProps) {
-  const t = useTranslations('homePage')[language] as any;
+  const t = useTranslationForLanguage('homePage', language) as any;
 
   return (
     <div className="w-full">

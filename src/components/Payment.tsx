@@ -1,5 +1,5 @@
 import { CreditCard, Building, Shield, Clock } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -8,7 +8,7 @@ interface PaymentProps {
 }
 
 export function Payment({ language }: PaymentProps) {
-  const t = useTranslations('payment')[language] as any;
+  const t = useTranslationForLanguage('payment', language) as any;
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6 sm:py-12">

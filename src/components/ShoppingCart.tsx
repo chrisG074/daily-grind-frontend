@@ -1,6 +1,6 @@
 import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Currency = string;
@@ -28,7 +28,7 @@ interface ShoppingCartProps {
 }
 
 export function ShoppingCart({ isOpen, onClose, language, currency, onCheckout, cartItems, onUpdateQuantity, onRemoveItem }: ShoppingCartProps) {
-  const t = useTranslations('shoppingCart')[language] as any;
+  const t = useTranslationForLanguage('shoppingCart', language) as any;
 
   if (!isOpen) return null;
 

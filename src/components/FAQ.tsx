@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -10,7 +10,7 @@ interface FAQProps {
 
 export function FAQ({ language }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<string | null>('ordering-0');
-  const t = useTranslations('faq')[language] as any;
+  const t = useTranslationForLanguage('faq', language) as any;
 
   const toggleQuestion = (categoryKey: string, index: number) => {
     const key = `${categoryKey}-${index}`;

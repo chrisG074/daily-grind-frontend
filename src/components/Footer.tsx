@@ -1,6 +1,6 @@
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Newsletter } from './Newsletter';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -17,7 +17,7 @@ interface FooterProps {
 }
 
 export function Footer({ language, onPrivacyClick, onTermsClick, onCookiesClick, onLogoClick, onFaqClick, onShippingClick, onReturnsClick, onPaymentClick }: FooterProps) {
-  const t = useTranslations('footer')[language] as any;
+  const t = useTranslationForLanguage('footer', language) as any;
 
   return (
     <footer className="bg-white text-foreground border-t-2 border-border">

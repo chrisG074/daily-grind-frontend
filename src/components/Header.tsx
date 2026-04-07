@@ -1,6 +1,6 @@
 import { Search, ShoppingCart, Globe, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 import {
   LanguageOption,
   CurrencyOption,
@@ -41,7 +41,7 @@ export function Header({
 }: HeaderProps) {
   const [langOpen, setLangOpen] = useState(false);
   const [currOpen, setCurrOpen] = useState(false);
-  const t = useTranslations('header')[language] as any;
+  const t = useTranslationForLanguage('header', language) as any;
 
   return (
     <header className="bg-white border-b border-border sticky top-0 z-50">

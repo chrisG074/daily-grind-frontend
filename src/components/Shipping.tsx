@@ -1,5 +1,5 @@
 import { Package, Truck, Clock, Globe } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -8,7 +8,7 @@ interface ShippingProps {
 }
 
 export function Shipping({ language }: ShippingProps) {
-  const t = useTranslations('shipping')[language] as any;
+  const t = useTranslationForLanguage('shipping', language) as any;
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6 sm:py-12">

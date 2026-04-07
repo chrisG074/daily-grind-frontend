@@ -1,7 +1,7 @@
 import { ArrowLeft, Upload, Info } from 'lucide-react';
 import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Currency = string;
@@ -52,7 +52,7 @@ export function FlagConfigurator({ product, language, currency, onBack, onAddToC
   const [quantity, setQuantity] = useState(1);
   const [logoFile, setLogoFile] = useState<File | null>(null);
 
-  const t = useTranslations('flagConfigurator')[language] as any;
+  const t = useTranslationForLanguage('flagConfigurator', language) as any;
 
   const calculateTotal = () => {
     const sizePrice = sizes.find(s => s.value === size)?.price || 0;

@@ -1,4 +1,4 @@
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -7,7 +7,7 @@ interface TermsConditionsProps {
 }
 
 export function TermsConditions({ language }: TermsConditionsProps) {
-  const t = useTranslations('termsConditions')[language] as any;
+  const t = useTranslationForLanguage('termsConditions', language) as any;
 
   return (
     <div className="max-w-[1000px] mx-auto px-4 py-12">

@@ -1,6 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest' | 'name';
@@ -14,7 +14,7 @@ interface ProductSortProps {
 export function ProductSort({ language, onSortChange, productCount }: ProductSortProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<SortOption>('popular');
-  const t = useTranslations('productSort')[language] as any;
+  const t = useTranslationForLanguage('productSort', language) as any;
 
   const sortOptions: { value: SortOption; label: string }[] = [
     { value: 'popular', label: t.popular },

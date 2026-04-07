@@ -1,5 +1,5 @@
 import { ChevronRight, Home } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Category = 'country' | 'corporate' | 'accessories';
@@ -11,7 +11,7 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ category, language, onNavigateHome }: BreadcrumbsProps) {
-  const t = useTranslations('breadcrumbs')[language] as any;
+  const t = useTranslationForLanguage('breadcrumbs', language) as any;
 
   return (
     <nav className="flex items-center gap-2 text-sm mb-6">

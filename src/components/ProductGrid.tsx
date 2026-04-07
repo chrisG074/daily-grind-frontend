@@ -1,6 +1,6 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Star, Flame, Sparkles, Globe } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Currency = string;
@@ -39,7 +39,7 @@ const mockProducts = {
 };
 
 export function ProductGrid({ category, filters, language, currency, onProductClick, sortOption = 'popular', currencySymbols, currencyRates }: ProductGridProps) {
-  const t = useTranslations('productGrid')[language] as any;
+  const t = useTranslationForLanguage('productGrid', language) as any;
   const products = mockProducts[category];
 
   // Filter products

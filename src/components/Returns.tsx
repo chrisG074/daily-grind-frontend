@@ -1,5 +1,5 @@
 import { RotateCcw, CheckCircle, XCircle, Mail } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -8,7 +8,7 @@ interface ReturnsProps {
 }
 
 export function Returns({ language }: ReturnsProps) {
-  const t = useTranslations('returns')[language] as any;
+  const t = useTranslationForLanguage('returns', language) as any;
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6 sm:py-12">

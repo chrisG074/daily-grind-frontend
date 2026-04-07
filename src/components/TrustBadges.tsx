@@ -1,5 +1,5 @@
 import { Shield, Truck, CreditCard, Award, Phone, Package } from 'lucide-react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -8,7 +8,7 @@ interface TrustBadgesProps {
 }
 
 export function TrustBadges({ language }: TrustBadgesProps) {
-  const t = useTranslations('trustBadges')[language] as any;
+  const t = useTranslationForLanguage('trustBadges', language) as any;
 
   return (
     <div className="bg-white border-2 border-black rounded-lg p-6 mb-8">

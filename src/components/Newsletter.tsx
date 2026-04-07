@@ -1,6 +1,6 @@
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 
@@ -11,7 +11,7 @@ interface NewsletterProps {
 export function Newsletter({ language }: NewsletterProps) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const t = useTranslations('newsletter')[language] as any;
+  const t = useTranslationForLanguage('newsletter', language) as any;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,3 +1,5 @@
+import { useTranslationForLanguage } from '../context/TranslationsContext';
+
 type Language = string;
 
 interface CookiePolicyProps {
@@ -5,7 +7,7 @@ interface CookiePolicyProps {
 }
 
 export function CookiePolicy({ language }: CookiePolicyProps) {
-  const t = useTranslations('cookiePolicy')[language] as any;
+  const t = useTranslationForLanguage('cookiePolicy', language) as any;
 
   return (
     <div className="max-w-[1000px] mx-auto px-4 py-12">

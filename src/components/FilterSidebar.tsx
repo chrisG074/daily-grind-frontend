@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslations } from '../context/TranslationsContext';
+import { useTranslationForLanguage } from '../context/TranslationsContext';
 
 type Language = string;
 type Category = 'country' | 'corporate' | 'accessories';
@@ -30,7 +30,7 @@ export function FilterSidebar({ filters, onFiltersChange, language, category }: 
     material: true,
   });
 
-  const t = useTranslations('filterSidebar')[language] as any;
+  const t = useTranslationForLanguage('filterSidebar', language) as any;
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
