@@ -17,9 +17,14 @@ import { FAQ } from './components/FAQ';
 import { Shipping } from './components/Shipping';
 import { Returns } from './components/Returns';
 import { Payment } from './components/Payment';
+import { useLocalization } from './hooks/useLocalization';
+import { TranslationsProvider } from './context/TranslationsContext';
+import {
+  buildCurrencyMaps
+} from './config/localization';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
-type Currency = 'EUR' | 'GBP' | 'USD';
+type Language = string;
+type Currency = string;
 type Category = 'country' | 'corporate' | 'accessories';
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest' | 'name';
 type Page = 'home' | 'shop' | 'privacy' | 'terms' | 'cookies' | 'faq' | 'shipping' | 'returns' | 'payment';
@@ -65,8 +70,13 @@ const mockCartItems: CartItem[] = [
 ];
 
 export default function App() {
-  const [language, setLanguage] = useState<Language>('nl');
-  const [currency, setCurrency] = useState<Currency>('EUR');
+  // Fetch localization data using custom hook
+  const { availableLanguages, availableCurrencies, isLoadingLocalization, localizationError } =
+    useLocalization();
+
+  // User selections with defaults
+  const [language, setLanguage] = useState<string>('nl');
+  const [currency, setCurrency] = useState<string>('EUR');
   const [category, setCategory] = useState<Category>('country');
   const [filters, setFilters] = useState<FilterState>({
     attachmentMethod: [],
@@ -112,7 +122,11 @@ export default function App() {
     setCartItems(items => items.filter(item => item.id !== id));
   };
 
+  // Build currency symbols and rates from API data
+  const { symbols: currencySymbols, rates: currencyRates } = buildCurrencyMaps(availableCurrencies);
+
   return (
+    <TranslationsProvider>
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header
         language={language}
@@ -129,6 +143,8 @@ export default function App() {
           setCurrentPage('home');
         }}
         cartItemCount={cartItemCount}
+        availableLanguages={availableLanguages}
+        availableCurrencies={availableCurrencies}
       />
 
       {checkoutStep > 0 && (
@@ -198,6 +214,8 @@ export default function App() {
                     currency={currency}
                     onProductClick={setSelectedProduct}
                     sortOption={sortOption}
+                    currencySymbols={currencySymbols}
+                    currencyRates={currencyRates}
                   />
                 </div>
               </div>
@@ -234,5 +252,6 @@ export default function App() {
         onRemoveItem={removeItem}
       />
     </div>
+    </TranslationsProvider>
   );
 }

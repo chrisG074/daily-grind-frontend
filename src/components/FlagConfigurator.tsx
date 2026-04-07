@@ -1,9 +1,10 @@
 import { ArrowLeft, Upload, Info } from 'lucide-react';
 import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
-type Currency = 'EUR' | 'GBP' | 'USD';
+type Language = string;
+type Currency = string;
 
 interface FlagConfiguratorProps {
   product: any;
@@ -13,98 +14,35 @@ interface FlagConfiguratorProps {
   onAddToCart: () => void;
 }
 
-const translations = {
-  nl: {
-    backToProducts: 'Terug naar producten',
-    configure: 'Configureer uw vlag',
-    size: 'Afmeting',
-    material: 'Materiaal',
-    attachment: 'Bevestiging',
-    customLogo: 'Eigen logo uploaden',
-    uploadLogo: 'Logo uploaden (optioneel)',
-    quantity: 'Aantal',
-    addToCart: 'Toevoegen aan winkelwagen',
-    totalPrice: 'Totaalprijs',
-    flagInstructions: 'Vlaginstructies',
-    instructionsText: 'Deze vlag dient horizontaal te worden opgehangen met de strepen horizontaal lopend.',
-    materialInfo: '110g/m² Gloss Poly: Standaard kwaliteit, geschikt voor binnen- en buitengebruik',
-  },
-  en: {
-    backToProducts: 'Back to products',
-    configure: 'Configure your flag',
-    size: 'Size',
-    material: 'Material',
-    attachment: 'Attachment',
-    customLogo: 'Upload custom logo',
-    uploadLogo: 'Upload logo (optional)',
-    quantity: 'Quantity',
-    addToCart: 'Add to cart',
-    totalPrice: 'Total price',
-    flagInstructions: 'Flag Instructions',
-    instructionsText: 'This flag should be hung horizontally with the stripes running horizontally.',
-    materialInfo: '110g/m² Gloss Poly: Standard quality, suitable for indoor and outdoor use',
-  },
-  de: {
-    backToProducts: 'Zurück zu Produkten',
-    configure: 'Konfigurieren Sie Ihre Flagge',
-    size: 'Größe',
-    material: 'Material',
-    attachment: 'Befestigung',
-    customLogo: 'Eigenes Logo hochladen',
-    uploadLogo: 'Logo hochladen (optional)',
-    quantity: 'Anzahl',
-    addToCart: 'In den Warenkorb',
-    totalPrice: 'Gesamtpreis',
-    flagInstructions: 'Flaggenanweisungen',
-    instructionsText: 'Diese Flagge sollte horizontal mit horizontal verlaufenden Streifen aufgehängt werden.',
-    materialInfo: '110g/m² Gloss Poly: Standardqualität, geeignet für Innen- und Außenbereich',
-  },
-  fr: {
-    backToProducts: 'Retour aux produits',
-    configure: 'Configurez votre drapeau',
-    size: 'Taille',
-    material: 'Matériau',
-    attachment: 'Fixation',
-    customLogo: 'Télécharger un logo personnalisé',
-    uploadLogo: 'Télécharger le logo (optionnel)',
-    quantity: 'Quantité',
-    addToCart: 'Ajouter au panier',
-    totalPrice: 'Prix total',
-    flagInstructions: 'Instructions du drapeau',
-    instructionsText: 'Ce drapeau doit être suspendu horizontalement avec les rayures horizontales.',
-    materialInfo: '110g/m² Gloss Poly: Qualité standard, adapté à un usage intérieur et extérieur',
-  },
-};
-
 const sizes = [
   { value: '100x150', label: '100 x 150 cm', price: 0 },
-  { value: '150x225', label: '150 x 225 cm', price: 15 },
-  { value: '200x300', label: '200 x 300 cm', price: 35 },
+  { value: '150x225', label: '150 x 225 cm', price: 9.95 },
+  { value: '200x300', label: '200 x 300 cm', price: 19.95 }
 ];
 
 const materials = [
-  { value: 'gloss', label: '110g/m² Gloss Poly', price: 0 },
-  { value: 'nautical', label: '115g/m² Nautical Poly', price: 10 },
-  { value: 'premium', label: '150g/m² Premium Poly', price: 20 },
+  { value: 'gloss', label: 'Gloss Poly', price: 0 },
+  { value: 'nautical', label: 'Nautical Poly', price: 4.95 },
+  { value: 'premium', label: 'Premium Poly', price: 9.95 }
 ];
 
 const attachments = [
   { value: 'hooks', label: 'Hooks', price: 0 },
-  { value: 'cord', label: 'Cord', price: 5 },
-  { value: 'tunnel', label: 'Tunnel', price: 8 },
-  { value: 'eyelet', label: 'Eyelets', price: 3 },
+  { value: 'cord', label: 'Cord', price: 2.5 },
+  { value: 'eyelets', label: 'Eyelets', price: 4.95 },
+  { value: 'tunnel', label: 'Tunnel', price: 3.95 }
 ];
 
-const currencySymbols = {
+const currencySymbols: Record<string, string> = {
   EUR: '€',
   GBP: '£',
-  USD: '$',
+  USD: '$'
 };
 
-const currencyRates = {
+const currencyRates: Record<string, number> = {
   EUR: 1,
   GBP: 0.85,
-  USD: 1.1,
+  USD: 1.1
 };
 
 export function FlagConfigurator({ product, language, currency, onBack, onAddToCart }: FlagConfiguratorProps) {
@@ -114,7 +52,7 @@ export function FlagConfigurator({ product, language, currency, onBack, onAddToC
   const [quantity, setQuantity] = useState(1);
   const [logoFile, setLogoFile] = useState<File | null>(null);
 
-  const t = translations[language];
+  const t = useTranslations('flagConfigurator')[language] as any;
 
   const calculateTotal = () => {
     const sizePrice = sizes.find(s => s.value === size)?.price || 0;

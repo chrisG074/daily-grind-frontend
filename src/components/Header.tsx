@@ -1,8 +1,15 @@
 import { Search, ShoppingCart, Globe, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '../context/TranslationsContext';
+import {
+  LanguageOption,
+  CurrencyOption,
+  DEFAULT_LANGUAGES,
+  DEFAULT_CURRENCIES
+} from '../config/localization';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
-type Currency = 'EUR' | 'GBP' | 'USD';
+type Language = string;
+type Currency = string;
 type Category = 'country' | 'corporate' | 'accessories';
 
 interface HeaderProps {
@@ -15,34 +22,9 @@ interface HeaderProps {
   onCartClick: () => void;
   onLogoClick?: () => void;
   cartItemCount?: number;
+  availableLanguages?: LanguageOption[];
+  availableCurrencies?: CurrencyOption[];
 }
-
-const translations = {
-  nl: {
-    search: 'Zoek vlaggen...',
-    countryFlags: 'Landvlaggen',
-    corporateFlags: 'Bedrijfsvlaggen',
-    accessories: 'Accessoires',
-  },
-  en: {
-    search: 'Search flags...',
-    countryFlags: 'Country Flags',
-    corporateFlags: 'Corporate Flags',
-    accessories: 'Accessories',
-  },
-  de: {
-    search: 'Flaggen suchen...',
-    countryFlags: 'Länderflaggen',
-    corporateFlags: 'Firmenflaggen',
-    accessories: 'Zubehör',
-  },
-  fr: {
-    search: 'Rechercher des drapeaux...',
-    countryFlags: 'Drapeaux Nationaux',
-    corporateFlags: 'Drapeaux d\'Entreprise',
-    accessories: 'Accessoires',
-  },
-};
 
 export function Header({
   language,
@@ -54,10 +36,12 @@ export function Header({
   onCartClick,
   onLogoClick,
   cartItemCount = 0,
+  availableLanguages = DEFAULT_LANGUAGES,
+  availableCurrencies = DEFAULT_CURRENCIES,
 }: HeaderProps) {
   const [langOpen, setLangOpen] = useState(false);
   const [currOpen, setCurrOpen] = useState(false);
-  const t = translations[language];
+  const t = useTranslations('header')[language] as any;
 
   return (
     <header className="bg-white border-b border-border sticky top-0 z-50">
@@ -83,16 +67,16 @@ export function Header({
                     onClick={() => setLangOpen(false)}
                   />
                   <div className="absolute top-full left-0 mt-1 bg-white text-foreground border border-border rounded py-1 min-w-[80px] z-50">
-                    {(['nl', 'en', 'de', 'fr'] as Language[]).map((lang) => (
+                    {availableLanguages.map((lang) => (
                       <button
-                        key={lang}
+                        key={lang.code}
                         onClick={() => {
-                          onLanguageChange(lang);
+                          onLanguageChange(lang.code);
                           setLangOpen(false);
                         }}
                         className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors text-sm"
                       >
-                        {lang.toUpperCase()}
+                        {lang.code.toUpperCase()}
                       </button>
                     ))}
                   </div>
@@ -117,16 +101,16 @@ export function Header({
                     onClick={() => setCurrOpen(false)}
                   />
                   <div className="absolute top-full left-0 mt-1 bg-white text-foreground border border-border rounded py-1 min-w-[80px] z-50">
-                    {(['EUR', 'GBP', 'USD'] as Currency[]).map((curr) => (
+                    {availableCurrencies.map((curr) => (
                       <button
-                        key={curr}
+                        key={curr.code}
                         onClick={() => {
-                          onCurrencyChange(curr);
+                          onCurrencyChange(curr.code);
                           setCurrOpen(false);
                         }}
                         className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors text-sm"
                       >
-                        {curr}
+                        {curr.code}
                       </button>
                     ))}
                   </div>

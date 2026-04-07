@@ -1,51 +1,17 @@
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 
 interface NewsletterProps {
   language: Language;
 }
 
-const translations = {
-  nl: {
-    title: 'Blijf op de hoogte',
-    subtitle: 'Ontvang onze nieuwsbrief met exclusieve aanbiedingen en nieuws',
-    placeholder: 'Uw e-mailadres',
-    button: 'Aanmelden',
-    success: 'Bedankt voor uw aanmelding!',
-    privacy: 'Wij respecteren uw privacy. U kunt zich op elk moment afmelden.',
-  },
-  en: {
-    title: 'Stay updated',
-    subtitle: 'Receive our newsletter with exclusive offers and news',
-    placeholder: 'Your email address',
-    button: 'Subscribe',
-    success: 'Thank you for subscribing!',
-    privacy: 'We respect your privacy. You can unsubscribe at any time.',
-  },
-  de: {
-    title: 'Bleiben Sie informiert',
-    subtitle: 'Erhalten Sie unseren Newsletter mit exklusiven Angeboten und Neuigkeiten',
-    placeholder: 'Ihre E-Mail-Adresse',
-    button: 'Anmelden',
-    success: 'Vielen Dank für Ihre Anmeldung!',
-    privacy: 'Wir respektieren Ihre Privatsphäre. Sie können sich jederzeit abmelden.',
-  },
-  fr: {
-    title: 'Restez informé',
-    subtitle: 'Recevez notre newsletter avec des offres exclusives et des actualités',
-    placeholder: 'Votre adresse e-mail',
-    button: 'S\'inscrire',
-    success: 'Merci de votre inscription!',
-    privacy: 'Nous respectons votre vie privée. Vous pouvez vous désabonner à tout moment.',
-  },
-};
-
 export function Newsletter({ language }: NewsletterProps) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const t = translations[language];
+  const t = useTranslations('newsletter')[language] as any;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

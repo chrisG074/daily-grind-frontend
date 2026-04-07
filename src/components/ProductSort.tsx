@@ -1,7 +1,8 @@
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest' | 'name';
 
 interface ProductSortProps {
@@ -10,53 +11,10 @@ interface ProductSortProps {
   productCount: number;
 }
 
-const translations = {
-  nl: {
-    showing: 'Toont',
-    products: 'producten',
-    sortBy: 'Sorteer op',
-    popular: 'Meest populair',
-    priceLow: 'Prijs: laag naar hoog',
-    priceHigh: 'Prijs: hoog naar laag',
-    newest: 'Nieuwste eerst',
-    name: 'Naam A-Z',
-  },
-  en: {
-    showing: 'Showing',
-    products: 'products',
-    sortBy: 'Sort by',
-    popular: 'Most popular',
-    priceLow: 'Price: low to high',
-    priceHigh: 'Price: high to low',
-    newest: 'Newest first',
-    name: 'Name A-Z',
-  },
-  de: {
-    showing: 'Zeigt',
-    products: 'Produkte',
-    sortBy: 'Sortieren nach',
-    popular: 'Am beliebtesten',
-    priceLow: 'Preis: niedrig bis hoch',
-    priceHigh: 'Preis: hoch bis niedrig',
-    newest: 'Neueste zuerst',
-    name: 'Name A-Z',
-  },
-  fr: {
-    showing: 'Affichage',
-    products: 'produits',
-    sortBy: 'Trier par',
-    popular: 'Plus populaire',
-    priceLow: 'Prix: bas à élevé',
-    priceHigh: 'Prix: élevé à bas',
-    newest: 'Plus récent',
-    name: 'Nom A-Z',
-  },
-};
-
 export function ProductSort({ language, onSortChange, productCount }: ProductSortProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<SortOption>('popular');
-  const t = translations[language];
+  const t = useTranslations('productSort')[language] as any;
 
   const sortOptions: { value: SortOption; label: string }[] = [
     { value: 'popular', label: t.popular },

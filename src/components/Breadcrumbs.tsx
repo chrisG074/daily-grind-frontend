@@ -1,6 +1,7 @@
 import { ChevronRight, Home } from 'lucide-react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 type Category = 'country' | 'corporate' | 'accessories';
 
 interface BreadcrumbsProps {
@@ -9,39 +10,8 @@ interface BreadcrumbsProps {
   onNavigateHome: () => void;
 }
 
-const translations = {
-  nl: {
-    home: 'Home',
-    shop: 'Winkel',
-    country: 'Landvlaggen',
-    corporate: 'Bedrijfsvlaggen',
-    accessories: 'Accessoires',
-  },
-  en: {
-    home: 'Home',
-    shop: 'Shop',
-    country: 'Country Flags',
-    corporate: 'Corporate Flags',
-    accessories: 'Accessories',
-  },
-  de: {
-    home: 'Startseite',
-    shop: 'Shop',
-    country: 'Länderflaggen',
-    corporate: 'Firmenflaggen',
-    accessories: 'Zubehör',
-  },
-  fr: {
-    home: 'Accueil',
-    shop: 'Boutique',
-    country: 'Drapeaux Nationaux',
-    corporate: 'Drapeaux d\'Entreprise',
-    accessories: 'Accessoires',
-  },
-};
-
 export function Breadcrumbs({ category, language, onNavigateHome }: BreadcrumbsProps) {
-  const t = translations[language];
+  const t = useTranslations('breadcrumbs')[language] as any;
 
   return (
     <nav className="flex items-center gap-2 text-sm mb-6">

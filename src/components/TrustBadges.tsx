@@ -1,48 +1,14 @@
 import { Shield, Truck, CreditCard, Award, Phone, Package } from 'lucide-react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 
 interface TrustBadgesProps {
   language: Language;
 }
 
-const translations = {
-  nl: {
-    securePayment: 'Veilig betalen',
-    freeShipping: 'Gratis verzending vanaf €75',
-    quality: 'Premium kwaliteit',
-    support: '24/7 Klantenservice',
-    fastDelivery: 'Snelle levering',
-    returns: '30 dagen retourrecht',
-  },
-  en: {
-    securePayment: 'Secure payment',
-    freeShipping: 'Free shipping from €75',
-    quality: 'Premium quality',
-    support: '24/7 Customer support',
-    fastDelivery: 'Fast delivery',
-    returns: '30 days return policy',
-  },
-  de: {
-    securePayment: 'Sichere Zahlung',
-    freeShipping: 'Kostenloser Versand ab €75',
-    quality: 'Premium Qualität',
-    support: '24/7 Kundendienst',
-    fastDelivery: 'Schnelle Lieferung',
-    returns: '30 Tage Rückgaberecht',
-  },
-  fr: {
-    securePayment: 'Paiement sécurisé',
-    freeShipping: 'Livraison gratuite à partir de €75',
-    quality: 'Qualité premium',
-    support: 'Support client 24/7',
-    fastDelivery: 'Livraison rapide',
-    returns: '30 jours de retour',
-  },
-};
-
 export function TrustBadges({ language }: TrustBadgesProps) {
-  const t = translations[language];
+  const t = useTranslations('trustBadges')[language] as any;
 
   return (
     <div className="bg-white border-2 border-black rounded-lg p-6 mb-8">

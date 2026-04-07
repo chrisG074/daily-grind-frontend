@@ -1,8 +1,9 @@
 import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
-type Currency = 'EUR' | 'GBP' | 'USD';
+type Language = string;
+type Currency = string;
 
 export interface CartItem {
   id: number;
@@ -26,63 +27,8 @@ interface ShoppingCartProps {
   onRemoveItem?: (id: number) => void;
 }
 
-const translations = {
-  nl: {
-    cart: 'Winkelwagen',
-    empty: 'Uw winkelwagen is leeg',
-    subtotal: 'Subtotaal',
-    shipping: 'Verzending',
-    freeShipping: 'Gratis',
-    total: 'Totaal',
-    checkout: 'Afrekenen',
-    continueShopping: 'Verder winkelen',
-  },
-  en: {
-    cart: 'Shopping Cart',
-    empty: 'Your cart is empty',
-    subtotal: 'Subtotal',
-    shipping: 'Shipping',
-    freeShipping: 'Free',
-    total: 'Total',
-    checkout: 'Checkout',
-    continueShopping: 'Continue shopping',
-  },
-  de: {
-    cart: 'Warenkorb',
-    empty: 'Ihr Warenkorb ist leer',
-    subtotal: 'Zwischensumme',
-    shipping: 'Versand',
-    freeShipping: 'Kostenlos',
-    total: 'Gesamt',
-    checkout: 'Zur Kasse',
-    continueShopping: 'Weiter einkaufen',
-  },
-  fr: {
-    cart: 'Panier',
-    empty: 'Votre panier est vide',
-    subtotal: 'Sous-total',
-    shipping: 'Livraison',
-    freeShipping: 'Gratuit',
-    total: 'Total',
-    checkout: 'Commander',
-    continueShopping: 'Continuer les achats',
-  },
-};
-
-const currencySymbols = {
-  EUR: '€',
-  GBP: '£',
-  USD: '$',
-};
-
-const currencyRates = {
-  EUR: 1,
-  GBP: 0.85,
-  USD: 1.1,
-};
-
 export function ShoppingCart({ isOpen, onClose, language, currency, onCheckout, cartItems, onUpdateQuantity, onRemoveItem }: ShoppingCartProps) {
-  const t = translations[language];
+  const t = useTranslations('shoppingCart')[language] as any;
 
   if (!isOpen) return null;
 

@@ -1,8 +1,9 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Star, Flame, Sparkles, Globe } from 'lucide-react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
-type Currency = 'EUR' | 'GBP' | 'USD';
+type Language = string;
+type Currency = string;
 type Category = 'country' | 'corporate' | 'accessories';
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest' | 'name';
 
@@ -17,98 +18,28 @@ interface ProductGridProps {
   currency: Currency;
   onProductClick: (product: any) => void;
   sortOption?: SortOption;
+  currencySymbols: Record<string, string>;
+  currencyRates: Record<string, number>;
 }
-
-const translations = {
-  nl: {
-    from: 'Vanaf',
-    customize: 'Aanpassen',
-    noResults: 'Geen producten gevonden',
-    noResultsDesc: 'Probeer de filters aan te passen',
-    reviews: 'beoordelingen',
-    bestseller: 'Bestseller',
-    new: 'Nieuw',
-    popular: 'Populair',
-  },
-  en: {
-    from: 'From',
-    customize: 'Customize',
-    noResults: 'No products found',
-    noResultsDesc: 'Try adjusting the filters',
-    reviews: 'reviews',
-    bestseller: 'Bestseller',
-    new: 'New',
-    popular: 'Popular',
-  },
-  de: {
-    from: 'Ab',
-    customize: 'Anpassen',
-    noResults: 'Keine Produkte gefunden',
-    noResultsDesc: 'Versuchen Sie die Filter anzupassen',
-    reviews: 'Bewertungen',
-    bestseller: 'Bestseller',
-    new: 'Neu',
-    popular: 'Beliebt',
-  },
-  fr: {
-    from: 'À partir de',
-    customize: 'Personnaliser',
-    noResults: 'Aucun produit trouvé',
-    noResultsDesc: 'Essayez d\'ajuster les filtres',
-    reviews: 'avis',
-    bestseller: 'Best-seller',
-    new: 'Nouveau',
-    popular: 'Populaire',
-  },
-};
 
 const mockProducts = {
   country: [
-    { id: 1, name: 'Netherlands Flag', country: 'Netherlands', price: 24.99, image: 'netherlands flag', rating: 4.8, reviewCount: 234, badge: 'bestseller' },
-    { id: 2, name: 'Belgian Flag', country: 'Belgium', price: 24.99, image: 'belgium flag', rating: 4.6, reviewCount: 156, badge: 'popular' },
-    { id: 3, name: 'German Flag', country: 'Germany', price: 24.99, image: 'germany flag', rating: 4.9, reviewCount: 312, badge: 'bestseller' },
-    { id: 4, name: 'French Flag', country: 'France', price: 24.99, image: 'france flag', rating: 4.7, reviewCount: 189, badge: null },
-    { id: 5, name: 'UK Flag', country: 'United Kingdom', price: 24.99, image: 'united kingdom flag', rating: 4.8, reviewCount: 267, badge: 'popular' },
-    { id: 6, name: 'Spanish Flag', country: 'Spain', price: 24.99, image: 'spain flag', rating: 4.5, reviewCount: 143, badge: null },
-    { id: 7, name: 'Italian Flag', country: 'Italy', price: 24.99, image: 'italy flag', rating: 4.7, reviewCount: 198, badge: 'new' },
-    { id: 8, name: 'USA Flag', country: 'USA', price: 29.99, image: 'usa american flag', rating: 4.9, reviewCount: 421, badge: 'bestseller' },
+    { id: 101, name: 'Netherlands Flag', price: 24.99, image: 'netherlands flag', rating: 4.8, reviewCount: 214, badge: 'bestseller', country: 'Netherlands' },
+    { id: 102, name: 'Germany Flag', price: 24.99, image: 'germany flag', rating: 4.7, reviewCount: 188, badge: 'popular', country: 'Germany' },
+    { id: 103, name: 'France Flag', price: 24.99, image: 'france flag', rating: 4.6, reviewCount: 166, badge: null, country: 'France' }
   ],
   corporate: [
-    { id: 101, name: 'Custom Corporate Flag', price: 49.99, image: 'corporate business flag', rating: 4.9, reviewCount: 178, badge: 'popular' },
-    { id: 102, name: 'Company Logo Flag', price: 59.99, image: 'company logo flag', rating: 4.8, reviewCount: 203, badge: 'bestseller' },
-    { id: 103, name: 'Promotional Flag', price: 39.99, image: 'promotional banner flag', rating: 4.6, reviewCount: 124, badge: null },
-    { id: 104, name: 'Event Flag', price: 44.99, image: 'event banner flag', rating: 4.7, reviewCount: 156, badge: 'new' },
-    { id: 105, name: 'Trade Show Flag', price: 54.99, image: 'trade show flag', rating: 4.8, reviewCount: 189, badge: 'bestseller' },
-    { id: 106, name: 'Brand Identity Flag', price: 64.99, image: 'brand flag corporate', rating: 4.7, reviewCount: 145, badge: 'popular' },
-    { id: 107, name: 'Marketing Flag', price: 42.99, image: 'marketing banner flag', rating: 4.5, reviewCount: 98, badge: null },
-    { id: 108, name: 'Corporate Event Flag', price: 52.99, image: 'corporate event banner', rating: 4.9, reviewCount: 234, badge: 'new' },
+    { id: 201, name: 'Corporate Flag Classic', price: 49.99, image: 'corporate business flag', rating: 4.9, reviewCount: 102, badge: 'new' },
+    { id: 202, name: 'Premium Logo Flag', price: 59.99, image: 'premium corporate flag', rating: 4.8, reviewCount: 88, badge: 'bestseller' }
   ],
   accessories: [
-    { id: 201, name: 'Flagpole', price: 89.99, image: 'flagpole', rating: 4.8, reviewCount: 287, badge: 'bestseller' },
-    { id: 202, name: 'Flag Hooks Set', price: 12.99, image: 'flag hooks metal', rating: 4.7, reviewCount: 412, badge: 'popular' },
-    { id: 203, name: 'Flag Cord', price: 8.99, image: 'flag cord rope', rating: 4.5, reviewCount: 198, badge: null },
-    { id: 204, name: 'Wall Mount Bracket', price: 19.99, image: 'wall mount bracket', rating: 4.6, reviewCount: 234, badge: null },
-    { id: 205, name: 'Flagpole Stand', price: 45.99, image: 'flagpole stand base', rating: 4.8, reviewCount: 167, badge: 'bestseller' },
-    { id: 206, name: 'Flag Clips Set', price: 9.99, image: 'flag clips metal', rating: 4.6, reviewCount: 289, badge: 'popular' },
-    { id: 207, name: 'Outdoor Flagpole', price: 129.99, image: 'outdoor flagpole tall', rating: 4.9, reviewCount: 156, badge: 'new' },
-    { id: 208, name: 'Flag Mounting Kit', price: 24.99, image: 'flag mounting hardware', rating: 4.7, reviewCount: 203, badge: null },
-  ],
+    { id: 301, name: 'Flag Pole', price: 89.99, image: 'flag pole', rating: 4.7, reviewCount: 61, badge: 'popular' },
+    { id: 302, name: 'Wall Mount Kit', price: 19.99, image: 'wall mount kit', rating: 4.5, reviewCount: 44, badge: null }
+  ]
 };
 
-const currencySymbols = {
-  EUR: '€',
-  GBP: '£',
-  USD: '$',
-};
-
-const currencyRates = {
-  EUR: 1,
-  GBP: 0.85,
-  USD: 1.1,
-};
-
-export function ProductGrid({ category, filters, language, currency, onProductClick, sortOption = 'popular' }: ProductGridProps) {
-  const t = translations[language];
+export function ProductGrid({ category, filters, language, currency, onProductClick, sortOption = 'popular', currencySymbols, currencyRates }: ProductGridProps) {
+  const t = useTranslations('productGrid')[language] as any;
   const products = mockProducts[category];
 
   // Filter products

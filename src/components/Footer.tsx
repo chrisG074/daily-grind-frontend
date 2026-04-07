@@ -1,7 +1,8 @@
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Newsletter } from './Newsletter';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 
 interface FooterProps {
   language: Language;
@@ -15,103 +16,8 @@ interface FooterProps {
   onPaymentClick?: () => void;
 }
 
-const translations = {
-  nl: {
-    about: 'Over Ons',
-    aboutText: 'Vlag en Wimpel B.V. is uw internationale specialist in hoogwaardige vlaggen en wimpels voor bedrijven en particulieren.',
-    contact: 'Contact',
-    address: 'Hoofdstraat 123, 1234 AB Amsterdam',
-    phone: '+31 (0)20 123 4567',
-    email: 'info@vlagenwimpel.nl',
-    customerService: 'Klantenservice',
-    faq: 'Veelgestelde Vragen',
-    shipping: 'Verzending & Levering',
-    returns: 'Retourneren',
-    payment: 'Betaalmethoden',
-    legal: 'Juridisch',
-    privacy: 'Privacy Beleid',
-    terms: 'Algemene Voorwaarden',
-    cookies: 'Cookie Beleid',
-    followUs: 'Volg Ons',
-    newsletter: 'Nieuwsbrief',
-    newsletterText: 'Blijf op de hoogte van onze nieuwste producten en aanbiedingen',
-    subscribe: 'Inschrijven',
-    emailPlaceholder: 'Uw e-mailadres',
-    copyright: '© 2026 Vlag en Wimpel B.V. Alle rechten voorbehouden.',
-  },
-  en: {
-    about: 'About Us',
-    aboutText: 'Vlag en Wimpel B.V. is your international specialist in high-quality flags and pennants for businesses and individuals.',
-    contact: 'Contact',
-    address: 'Main Street 123, 1234 AB Amsterdam',
-    phone: '+31 (0)20 123 4567',
-    email: 'info@flagandpennant.com',
-    customerService: 'Customer Service',
-    faq: 'FAQ',
-    shipping: 'Shipping & Delivery',
-    returns: 'Returns',
-    payment: 'Payment Methods',
-    legal: 'Legal',
-    privacy: 'Privacy Policy',
-    terms: 'Terms & Conditions',
-    cookies: 'Cookie Policy',
-    followUs: 'Follow Us',
-    newsletter: 'Newsletter',
-    newsletterText: 'Stay updated with our latest products and offers',
-    subscribe: 'Subscribe',
-    emailPlaceholder: 'Your email address',
-    copyright: '© 2026 Vlag en Wimpel B.V. All rights reserved.',
-  },
-  de: {
-    about: 'Über Uns',
-    aboutText: 'Vlag en Wimpel B.V. ist Ihr internationaler Spezialist für hochwertige Flaggen und Wimpel für Unternehmen und Privatpersonen.',
-    contact: 'Kontakt',
-    address: 'Hauptstraße 123, 1234 AB Amsterdam',
-    phone: '+31 (0)20 123 4567',
-    email: 'info@flaggeundwimpel.de',
-    customerService: 'Kundenservice',
-    faq: 'Häufig Gestellte Fragen',
-    shipping: 'Versand & Lieferung',
-    returns: 'Rücksendungen',
-    payment: 'Zahlungsmethoden',
-    legal: 'Rechtliches',
-    privacy: 'Datenschutz',
-    terms: 'AGB',
-    cookies: 'Cookie-Richtlinie',
-    followUs: 'Folgen Sie Uns',
-    newsletter: 'Newsletter',
-    newsletterText: 'Bleiben Sie über unsere neuesten Produkte und Angebote informiert',
-    subscribe: 'Abonnieren',
-    emailPlaceholder: 'Ihre E-Mail-Adresse',
-    copyright: '© 2026 Vlag en Wimpel B.V. Alle Rechte vorbehalten.',
-  },
-  fr: {
-    about: 'À Propos',
-    aboutText: 'Vlag en Wimpel B.V. est votre spécialiste international de drapeaux et fanions de haute qualité pour les entreprises et les particuliers.',
-    contact: 'Contact',
-    address: 'Rue Principale 123, 1234 AB Amsterdam',
-    phone: '+31 (0)20 123 4567',
-    email: 'info@drapeauxetfanions.fr',
-    customerService: 'Service Client',
-    faq: 'FAQ',
-    shipping: 'Livraison',
-    returns: 'Retours',
-    payment: 'Méthodes de Paiement',
-    legal: 'Légal',
-    privacy: 'Politique de Confidentialité',
-    terms: 'Conditions Générales',
-    cookies: 'Politique de Cookies',
-    followUs: 'Suivez-Nous',
-    newsletter: 'Newsletter',
-    newsletterText: 'Restez informé de nos derniers produits et offres',
-    subscribe: 'S\'abonner',
-    emailPlaceholder: 'Votre adresse e-mail',
-    copyright: '© 2026 Vlag en Wimpel B.V. Tous droits réservés.',
-  },
-};
-
 export function Footer({ language, onPrivacyClick, onTermsClick, onCookiesClick, onLogoClick, onFaqClick, onShippingClick, onReturnsClick, onPaymentClick }: FooterProps) {
-  const t = translations[language];
+  const t = useTranslations('footer')[language] as any;
 
   return (
     <footer className="bg-white text-foreground border-t-2 border-border">

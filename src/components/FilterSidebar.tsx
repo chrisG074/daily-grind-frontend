@@ -1,7 +1,8 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '../context/TranslationsContext';
 
-type Language = 'nl' | 'en' | 'de' | 'fr';
+type Language = string;
 type Category = 'country' | 'corporate' | 'accessories';
 
 interface FilterSidebarProps {
@@ -14,69 +15,6 @@ interface FilterSidebarProps {
   language: Language;
   category: Category;
 }
-
-const translations = {
-  nl: {
-    filters: 'Filters',
-    attachmentMethod: 'Bevestigingsmethode',
-    country: 'Land',
-    material: 'Materiaal',
-    hooks: 'Haken',
-    cord: 'Koord',
-    tunnel: 'Tunnel',
-    eyelet: 'Oogjes',
-    glossPoly: '110g/m² Gloss Poly',
-    nauticalPoly: '115g/m² Nautical Poly',
-    premiumPoly: '150g/m² Premium Poly',
-    clearFilters: 'Wis filters',
-    notApplicable: 'Niet van toepassing voor deze categorie',
-  },
-  en: {
-    filters: 'Filters',
-    attachmentMethod: 'Attachment Method',
-    country: 'Country',
-    material: 'Material',
-    hooks: 'Hooks',
-    cord: 'Cord',
-    tunnel: 'Tunnel',
-    eyelet: 'Eyelets',
-    glossPoly: '110g/m² Gloss Poly',
-    nauticalPoly: '115g/m² Nautical Poly',
-    premiumPoly: '150g/m² Premium Poly',
-    clearFilters: 'Clear filters',
-    notApplicable: 'Not applicable for this category',
-  },
-  de: {
-    filters: 'Filter',
-    attachmentMethod: 'Befestigungsmethode',
-    country: 'Land',
-    material: 'Material',
-    hooks: 'Haken',
-    cord: 'Schnur',
-    tunnel: 'Tunnel',
-    eyelet: 'Ösen',
-    glossPoly: '110g/m² Gloss Poly',
-    nauticalPoly: '115g/m² Nautical Poly',
-    premiumPoly: '150g/m² Premium Poly',
-    clearFilters: 'Filter löschen',
-    notApplicable: 'Nicht anwendbar für diese Kategorie',
-  },
-  fr: {
-    filters: 'Filtres',
-    attachmentMethod: 'Méthode de Fixation',
-    country: 'Pays',
-    material: 'Matériau',
-    hooks: 'Crochets',
-    cord: 'Corde',
-    tunnel: 'Tunnel',
-    eyelet: 'Œillets',
-    glossPoly: '110g/m² Gloss Poly',
-    nauticalPoly: '115g/m² Nautical Poly',
-    premiumPoly: '150g/m² Premium Poly',
-    clearFilters: 'Effacer les filtres',
-    notApplicable: 'Non applicable pour cette catégorie',
-  },
-};
 
 const countries = [
   'Netherlands', 'Belgium', 'Germany', 'France', 'United Kingdom',
@@ -92,7 +30,7 @@ export function FilterSidebar({ filters, onFiltersChange, language, category }: 
     material: true,
   });
 
-  const t = translations[language];
+  const t = useTranslations('filterSidebar')[language] as any;
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
